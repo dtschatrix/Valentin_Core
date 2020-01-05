@@ -31,7 +31,7 @@ namespace Valentin_Core
 
         #endregion
 
-        #region Public Methods
+        #region Getters And Setters
 
         public void SetCubeType(CubeTypeNumber cube)
         {
@@ -52,9 +52,9 @@ namespace Valentin_Core
                 case CubeTypeNumber.d100:
                     CubeType = 100;
                     break;
-               
+
             }
-            
+
         }
 
         public void GetCubeResult(DND dndcube)
@@ -81,6 +81,12 @@ namespace Valentin_Core
 
 
         }
+        #endregion
+
+        #region Public Methods
+
+
+
 
         public string SomeResult(string receviedmessage)
         {
@@ -105,22 +111,22 @@ namespace Valentin_Core
 
             else if (dnd.CubeType == 20)
             {
-            
+
                 switch (dnd.CubeResult)
-                    {
-                        case int n when (n < 6):
-                            sb.Append($"Вы не смогли {receviedmessage} куб показывает {dnd.CubeResult}");
-                            MessageText = sb.ToString();
-                            break;
-                        case int n when (n >= 6 && n < 11):
-                            sb.Append($"Не могу точно сказать смогли ли вы {receviedmessage}, куб показывает {dnd.CubeResult}, кинь ещё раз");
-                            MessageText = sb.ToString();
-                            break;
-                        case int n when (n >=11 && n <=19):
-                            sb.Append($"Вы смогли {receviedmessage} куб показывает {dnd.CubeResult}");
-                            MessageText = sb.ToString();
-                            break;
-                    }
+                {
+                    case int n when (n < 6):
+                        sb.Append($"Вы не смогли {receviedmessage} куб показывает {dnd.CubeResult}");
+                        MessageText = sb.ToString();
+                        break;
+                    case int n when (n >= 6 && n < 11):
+                        sb.Append($"Не могу точно сказать смогли ли вы {receviedmessage}, куб показывает {dnd.CubeResult}, кинь ещё раз");
+                        MessageText = sb.ToString();
+                        break;
+                    case int n when (n >= 11 && n <= 19):
+                        sb.Append($"Вы смогли {receviedmessage} куб показывает {dnd.CubeResult}");
+                        MessageText = sb.ToString();
+                        break;
+                }
             }
             else
             {

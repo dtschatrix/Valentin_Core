@@ -23,11 +23,10 @@ namespace Valentin_Core
 
         #endregion
 
-
+        #region Public Methods
         //TODO scraping from dotathread posts
 
-        #region Private Methods
-
+        //TODO rewrite this
         public void GetPasteFromNotepad()
         {
             Random rand = new Random(Guid.NewGuid().GetHashCode()); // impressive random :)
@@ -36,13 +35,18 @@ namespace Valentin_Core
             {
                 var lines = GetLinesFromText(reader.BaseStream);
                 var certainLine = rand.Next(0, (int)lines); // that's how you shouldn't
-                var paste = File.ReadAllLines(pathToFile,Encoding.UTF8).Skip(certainLine - 1).Take(1).First();
+                var paste = File.ReadAllLines(pathToFile, Encoding.UTF8).Skip(certainLine - 1).Take(1).First();
                 MessageText = paste;
             }
-            
+
         }
 
-        private  long GetLinesFromText(Stream stream)
+
+        #endregion
+
+        #region Private Methods
+        //TODO probably rewrite and move to stringhelpers.cs(?)
+        private long GetLinesFromText(Stream stream)
         {
             long linecount = 0L;
 
@@ -82,15 +86,11 @@ namespace Valentin_Core
             }
 
             if (pendingTermination) linecount++;
-            return  linecount;
+            return linecount;
         }
 
 
         #endregion
-
-      
-
-
 
     }
 }
