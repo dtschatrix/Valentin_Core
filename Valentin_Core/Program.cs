@@ -12,7 +12,7 @@ namespace Valentin_Core
         static ITelegramBotClient botClient;
         static void Main()
         {
-            var bot = new TelegramBotClient("609340909:AAFRc3WRQiFjKbrntC71mwo-UcQEKw_Tpm8");
+            var bot = new TelegramBotClient("BOT API");
             botClient = bot;
             bot.OnMessage += Bot_OnMessage;
             bot.StartReceiving();
