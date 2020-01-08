@@ -27,7 +27,7 @@ namespace Valentin_Core
         //TODO scraping from dotathread posts
 
         //TODO rewrite this
-        public void GetPasteFromNotepad()
+        public void GetPasteFromNotepad(ParseMessage pm)
         {
             Random rand = new Random(Guid.NewGuid().GetHashCode()); // impressive random :)
             string pathToFile = "D:\\projects\\Valentin_Core\\Valentin_Core\\resources\\text\\notepadPaste.txt"; // you could easily read from your file
@@ -37,6 +37,7 @@ namespace Valentin_Core
                 var certainLine = rand.Next(0, (int)lines); // that's how you shouldn't
                 var paste = File.ReadAllLines(pathToFile, Encoding.UTF8).Skip(certainLine - 1).Take(1).First();
                 MessageText = paste;
+                pm.CommandExecuted = true;
             }
 
         }

@@ -35,11 +35,34 @@ namespace Valentin_Core
             sb.Append(received);
             sb.Insert(0, "`");
             sb.Insert(received.Length, "`");
-
-            return sb.ToString();
+            string result = SpaceChecker(received);
+            return result;
 
         }
+
+        public static string ItalicMessage(string received)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(received);
+            sb.Insert(0, "_");
+            sb.Insert(received.Length, "_");
+            string result = SpaceChecker(received);
+            return result;
+        }
         #endregion
+
+        #region Private Static Methods
+        private static string SpaceChecker(string received)
+        {
+            StringBuilder sb = new StringBuilder(received);
+            sb.Remove(sb.Length - 1, 1);
+            return sb.ToString();
+        }
+
+
+        #endregion
+
+
     }
 }
 
