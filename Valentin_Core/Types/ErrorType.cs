@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Valentin_Core.Types
+namespace Valentin_Core
 {
     //TODO errortypes
     [Serializable]

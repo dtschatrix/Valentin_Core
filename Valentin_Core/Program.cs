@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using Microsoft.VisualBasic.CompilerServices;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
@@ -8,14 +7,16 @@ using Telegram.Bot.Types.Enums;
 
 namespace Valentin_Core
 {
-    class Program
+    class Program 
     {
         static ITelegramBotClient botClient;
         static void Main()
         {
-            var bot = new TelegramBotClient("BOT API");
+
+            var bot = new TelegramBotClient("BOT_API");
             botClient = bot;
             bot.OnMessage += Bot_OnMessage;
+            
             bot.StartReceiving();
             Thread.Sleep(Int32.MaxValue);
         }
@@ -26,29 +27,33 @@ namespace Valentin_Core
             try
             {
                 ParseMessage pm = new ParseMessage();
-
-                if (e.Message.Text == "/paste" && (e.Message.Chat.Id == -332067211 || e.Message.Chat.Id == -233464656))
+                pm.ParseUserMessage(e.Message.Text);
+                if (e.Message.Text == "/paste" &  !pm.CommandExecuted)
                 {
                     PasteDotaThread pdt = new PasteDotaThread();
-                    pdt.GetPasteFromNotepad();
+                    pdt.GetPasteFromNotepad(pm);
                     await botClient.SendTextMessageAsync(chatId: e.Message.Chat,
                         text: pdt.MessageText, replyToMessageId: e.Message.MessageId);
                     Console.WriteLine($"chat ID: {e.Message.Chat.Id} ");
                 }
                 //TODO rewrite this
-                if (pm.CurrentRegex.IsMatch(e.Message.Text))
+                if (pm.CurrentRegex.IsMatch(e.Message.Text)& !pm.CommandExecuted)
                 {
-                    pm.ParseUserMessage(e.Message.Text);
-                    DND dnd = new DND();
-                    dnd.SetCubeType(CubeTypeNumber.d20);
-                    dnd.GetCubeResult(dnd);
-                    dnd.SomeResult($"{pm.MessageText}");
-                    await botClient.SendTextMessageAsync(chatId: e.Message.Chat, text:
-                        dnd.MessageText, replyToMessageId: e.Message.MessageId, parseMode: ParseMode.Markdown);
-                    Thread.Sleep(1000);
-                    dnd.FinalResult(dnd, $"{pm.MessageText}");
-                    await botClient.SendTextMessageAsync(chatId: e.Message.Chat, text:
-                        dnd.MessageText, replyToMessageId: e.Message.MessageId, parseMode: ParseMode.Markdown);
+                    var cube = DndCaluclation.GetCube(pm.BotCommand);
+                    DNDResults dndr = new DNDResults();
+                    dndr.SomeResult(pm,cube);
+                    await botClient.SendTextMessageAsync(chatId: e.Message.Chat, text:dndr.TextMessage,
+                        replyToMessageId: e.Message.MessageId, parseMode: ParseMode.Markdown);
+                    dndr.FinalResult(pm, cube);
+                    await botClient.SendTextMessageAsync(chatId: e.Message.Chat, text: dndr.TextMessage,
+                        replyToMessageId: e.Message.MessageId, parseMode: ParseMode.Markdown);
+
+                }
+
+                if (e.Message.Text == "/test")
+                {
+                    await botClient.SendTextMessageAsync(chatId: e.Message.Chat, text: "_zalupa_,",
+                        replyToMessageId: e.Message.MessageId, parseMode: ParseMode.Markdown);
                 }
 
             }
