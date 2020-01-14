@@ -30,7 +30,7 @@ namespace Valentin_Core
         public void GetPasteFromNotepad(ParseMessage pm)
         {
             Random rand = new Random(Guid.NewGuid().GetHashCode()); // impressive random :)
-            string pathToFile = "D:\\projects\\Valentin_Core\\Valentin_Core\\resources\\text\\notepadPaste.txt"; // you could easily read from your file
+            string pathToFile = "D:\\projects\\Valentin_Core\\Valentin_Core\\resources\\text\\notepadPaste.txt"; // you can easily read from your file
             using (StreamReader reader = new StreamReader(pathToFile))
             {
                 var lines = GetLinesFromText(reader.BaseStream);
@@ -42,6 +42,20 @@ namespace Valentin_Core
 
         }
 
+        public void GetPasteFromOtecNotepad(ParseMessage pm)
+        {
+            Random rand = new Random(Guid.NewGuid().GetHashCode()); // impressive random :)
+            string pathToFile = @"D:\projects\Valentin_Core\Valentin_Core\resources\text\otecPaste.txt"; // you can easily read from your file
+            using (StreamReader reader = new StreamReader(pathToFile))
+            {
+                var lines = GetLinesFromText(reader.BaseStream);
+                var certainLine = rand.Next(0, (int)lines); // that's how you shouldn't
+                var paste = File.ReadAllLines(pathToFile, Encoding.UTF8).Skip(certainLine - 1).Take(1).First();
+                MessageText = paste;
+                pm.CommandExecuted = true;
+            }
+
+        }
 
         #endregion
 

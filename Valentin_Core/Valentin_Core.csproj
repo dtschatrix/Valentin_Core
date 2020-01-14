@@ -1,16 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <Authors>Valentin_Core</Authors>
+    <Company>ShadowFiend</Company>
+    <Version>1.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="Telegram.Bot" Version="15.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="resources\img\" />
+    <Folder Include="resources\img\Quotes\" />
   </ItemGroup>
 
 </Project>
