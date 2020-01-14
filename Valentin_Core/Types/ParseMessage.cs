@@ -9,40 +9,46 @@ namespace Valentin_Core
 {
     public class ParseMessage
     {
-        #region Public Properties
+        #region Private Constant Fields
 
-        public Regex CurrentRegex { get; set; }
+        //All commands.
+        private List<string> existCommandsBot = new List<string>()
+            {"/paste", "/d20", "/d8", "/d10", "/d100", "/d4", "/d12", "/otec", "Compod", "/help", "/test", "/fresco"};
+
+        #endregion
+
+        #region Public Properties
 
         public string MessageText { get; set; }
 
         public string BotCommand { get; set; }
 
         public List<string> SeparatedMessages { get; }
+        public List<string> MessageTextList { get; set; }
 
-        public bool HasArgument { get; set; } = false;
-        public bool HasMessage { get; set; } = false;
+        public bool HasArgument { get; set; }
+        public bool HasMessage { get; set; }
 
+        public List<string> ExistBotCommands { get; }
         public bool CommandExecuted { get; set; }
         public int Argument { get; set; }
-        #endregion
-        //TODO refactor this for any dices and cubes and commands ofc
-
-        #region Private Fields
-
-        List<string> regList = new List<string>();
 
         #endregion
 
         #region Constructors
+
         public ParseMessage()
         {
+            this.ExistBotCommands = existCommandsBot;
             this.SeparatedMessages = new List<string>();
         }
+
 
 
         #endregion
 
         #region Public Methods
+
         //TODO refactor this shitty types 
         /// <summary>
         /// Getting message right via parsing all parameters
@@ -52,45 +58,12 @@ namespace Valentin_Core
         {
             this.MessageText = CollectMessage(received); // and also set argument(!bad!)
             this.BotCommand = SeparatedMessages[0];
-            this.CurrentRegex = GetRegex(regList,received);
-            
+            this.MessageTextList = MessageTextToList(this.MessageText);
         }
-
-
 
         #endregion
 
         #region Private Methods
-        private List<string> GetListOfRegex()
-        {
-            List<string> lregex = new List<string>();
-            lregex.Add(@"^\/d4{1}(?!\s\/)(?!\/)[a-zA-Z0-9_ @]*");
-            lregex.Add(@"^\/d8{1}(?!\s\/)(?!\/)[a-zA-Z0-9_ @]*");
-            lregex.Add(@"^\/d10{1}(?!\s\/)(?!\/)[a-zA-Z0-9_ @]*");
-            lregex.Add(@"^\/d12{1}(?!\s\/)(?!\/)[a-zA-Z0-9_ @]*");
-            lregex.Add(@"^\/d20{1}(?!\s\/)(?!\/)[a-zA-Z0-9_ @]*");
-            lregex.Add(@"^\/d100{1}(?!\s\/)(?!\/)[a-zA-Z0-9_ @]*");
-            lregex.Add(@"^(\/paste)");
-            return lregex;
-        }
-
-        private Regex GetRegex(List<string> lrgex, string received)
-        {
-            if (lrgex.Count == 0)
-            {
-                lrgex = GetListOfRegex();
-            }
-
-            foreach (var match in lrgex)
-            {
-                if (Regex.IsMatch(received, match))
-                {
-                    return new Regex(match);
-                }
-            }
-            throw new Exception();
-        }
-
 
         //TODO probably move to string helpers(?)
         //Rewrite because command can be only
@@ -98,10 +71,11 @@ namespace Valentin_Core
         {
             if (received.Length != 0)
             {
-                String[] separator = {" ", ",", ", "};
+                String[] separator = {" ", ",", ", ", "."};
                 StringBuilder sb = new StringBuilder();
                 var tempString = received.Split(separator, 4096,
-                        StringSplitOptions.RemoveEmptyEntries); // 4096 max length of message on Telegram. according to github conversation
+                    StringSplitOptions
+                        .RemoveEmptyEntries); // 4096 max length of message on Telegram. according to github conversation
                 foreach (var substring in tempString)
                 {
                     SeparatedMessages.Add(substring);
@@ -111,21 +85,23 @@ namespace Valentin_Core
                         // I really don't like this, but zero idea how to make it better
                         //UPD did it, but still have doubt :\ 
                         bool successString = int.TryParse(substring, out int stringresult);
-                        
+
                         if (successString && substring == SeparatedMessages[1])
                         {
                             HasArgument = true;
                             Argument = stringresult;
                             continue;
                         }
+
                         sb.Append(substring + " ");
                     }
 
                 }
+
                 string formatMessage = "";
                 if (HasMessage)
                 {
-                     formatMessage = StringHelpers.ItalicMessage(sb.ToString());
+                    formatMessage = StringHelpers.ItalicMessage(sb.ToString());
                 }
                 else
                 {
@@ -137,8 +113,23 @@ namespace Valentin_Core
 
             throw new Exception();
         }
+
+        private List<string> MessageTextToList(string message)
+        {
+            String[] separator = {" ", ",", ", "};
+            List<string> result = new List<string>();
+            var tempString = message.Split(separator, 4096,
+                StringSplitOptions
+                    .RemoveEmptyEntries); // 4096 max length of message on Telegram. according to github conversation
+            foreach (var substring in tempString)
+            {
+                result.Add(substring);
+            }
+
+            return result;
+        }
+
         #endregion
 
     }
-
 }
