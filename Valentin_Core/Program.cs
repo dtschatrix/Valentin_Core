@@ -17,7 +17,7 @@ namespace Valentin_Core
         static void Main()
         {
             string bot_token = Environment.GetEnvironmentVariable("BOT_TOKEN");
-            var bot = new TelegramBotClient("609340909:AAFRc3WRQiFjKbrntC71mwo-UcQEKw_Tpm8");
+            var bot = new TelegramBotClient("");
             botClient = bot;
             bot.OnMessage += Bot_OnMessage;
             Console.WriteLine("Hello, I'm alive!:D'");
