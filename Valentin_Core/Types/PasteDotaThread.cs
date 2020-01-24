@@ -49,7 +49,7 @@ namespace Valentin_Core
             using (StreamReader reader = new StreamReader(pathToFile))
             {
                 var lines = GetLinesFromText(reader.BaseStream);
-                var certainLine = rand.Next(0, (int)lines); // that's how you shouldn't
+                var certainLine = rand.Next(0, lines); 
                 var paste = File.ReadAllLines(pathToFile, Encoding.UTF8).Skip(certainLine - 1).Take(1).First();
                 MessageText = paste;
                 pm.CommandExecuted = true;
@@ -61,9 +61,9 @@ namespace Valentin_Core
 
         #region Private Methods
         //TODO probably rewrite and move to stringhelpers.cs(?)
-        private long GetLinesFromText(Stream stream)
+        private int GetLinesFromText(Stream stream)
         {
-            long linecount = 0L;
+            int lineCount = 0;
 
             var byteBuffer = new byte[1024 * 1024];
 
@@ -84,7 +84,7 @@ namespace Valentin_Core
                             continue;
                         case CR:
                         case LF when prevChar != CR:
-                            linecount++;
+                            lineCount++;
                             pendingTermination = false;
                             break;
                         default:
@@ -100,8 +100,8 @@ namespace Valentin_Core
 
             }
 
-            if (pendingTermination) linecount++;
-            return linecount;
+            if (pendingTermination) lineCount++;
+            return lineCount;
         }
 
 

@@ -17,9 +17,10 @@ namespace Valentin_Core
         static void Main()
         {
             string bot_token = Environment.GetEnvironmentVariable("BOT_TOKEN");
-            var bot = new TelegramBotClient(bot_token);
+            var bot = new TelegramBotClient("609340909:AAFRc3WRQiFjKbrntC71mwo-UcQEKw_Tpm8");
             botClient = bot;
             bot.OnMessage += Bot_OnMessage;
+            Console.WriteLine("Hello, I'm alive!:D'");
 
             bot.StartReceiving();
             Thread.Sleep(Int32.MaxValue);
@@ -30,10 +31,9 @@ namespace Valentin_Core
         {
             try
             {
-                Message message = new Message();
                 ParseMessage pm = new ParseMessage();
                 PasteDotaThread pdt = new PasteDotaThread();
-                pm.ParseUserMessage(message.ReplyToMessage.Text);
+                pm.ParseUserMessage(e.Message.Text);
                 switch (pm.ExistBotCommands.Find(x => x.Equals(pm.BotCommand)))
                 {
                     case "/paste":
@@ -74,26 +74,13 @@ namespace Valentin_Core
                                 replyToMessageId: e.Message.MessageId);
                         }
                         break;
-                    case "/test":
-                        await using (var file =
-                            File.OpenRead(@"D:\projects\Valentin_Core\Valentin_Core\resources\img\fresco.jpg"))
-                        {
-                            var iofa = new InputOnlineFile(file, "shit.png");
-                            await botClient.SendPhotoAsync(e.Message.Chat, iofa, "иди нахуй",
-                                replyToMessageId: e.Message.MessageId);
-                        }
-
-                        break;
-
-
-
                 }
             }
             catch (Exception er)
             {
+                //TODO make error class and switch photo to local file.
                 await botClient.SendPhotoAsync(chatId: e.Message.Chat, photo:
                     "http://reactionimage.org/img/gallery/3926393515.jpg",
-                    replyToMessageId: e.Message.MessageId,
                     caption: "Какая-то хуйня, больше так не делай.\n" +
                              "Если думаешь, что проблема в боте\n" +
                              "то вызови автора командой */help*",

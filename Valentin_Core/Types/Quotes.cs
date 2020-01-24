@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Drawing.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Telegram.Bot.Types.InputFiles;
 
 namespace Valentin_Core
 {
@@ -36,8 +34,8 @@ namespace Valentin_Core
         {
             string text = "А текст мне самому придумать?";
             PointF location = new PointF(y: 70f, x: 40f);
-            string imagepath = @"D:\projects\Valentin_Core\Valentin_Core\resources\img\fresco.jpg";
-            using (Stream BitmapStream = System.IO.File.Open(imagepath, System.IO.FileMode.Open))
+            string imagepath = "..\\..\\..\\resources\\img\\fresco.jpg";
+            using (Stream BitmapStream = File.Open(imagepath, FileMode.Open))
             {
                 Image img = Image.FromStream(BitmapStream);
                 var mBitmap = new Bitmap(img);
@@ -51,14 +49,15 @@ namespace Valentin_Core
                     }
                 }
 
-                mBitmap.Save("Quotes.bpm", ImageFormat.Bmp);
+                mBitmap.Save("..\\..\\..\\resources\\img\\Quotes\\quotes.bpm", ImageFormat.Bmp);
                 return mBitmap;
             }
         }
 
+        //TODO create a pillow(lockbits)
         private Bitmap CreateFrescoQuotes(ParseMessage pm)
         {
-            string imagepath = @"D:\projects\Valentin_Core\Valentin_Core\resources\img\fresco.jpg";
+            string imagepath = "..\\..\\..\\resources\\img\\fresco.jpg";
             if (pm.HasMessage)
             {
                 StringBuilder part = new StringBuilder();
@@ -111,7 +110,7 @@ namespace Valentin_Core
                         }
                     }
 
-                    mBitmap.Save("Quotes.bpm", ImageFormat.Bmp);
+                    mBitmap.Save("..\\..\\..\\resources\\img\\Quotes\\quotes.bpm", ImageFormat.Bmp);
                     return mBitmap;
                 }
                 
@@ -126,7 +125,7 @@ namespace Valentin_Core
         {
             try
             {
-                string imagepath = @"D:\projects\Valentin_Core\Valentin_Core\bin\Debug\netcoreapp3.0\Quotes.bpm";
+                string imagepath = "..\\..\\..\\resources\\img\\Quotes\\quotes.bpm";
                 PathToFile = imagepath;
                 using var file = File.OpenRead(imagepath);
                 return file;
