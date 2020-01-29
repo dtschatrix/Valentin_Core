@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -48,6 +49,17 @@ namespace Valentin_Core
             sb.Insert(received.Length, "_");
             string result = SpaceChecker(received);
             return result;
+        }
+
+        public static string QuotesMessage(List<string> received)
+        {
+            StringBuilder part = new StringBuilder();
+            foreach (var token in received)
+            {
+                part.Append(token + " ");
+            }
+
+            return part.ToString();
         }
         #endregion
 
