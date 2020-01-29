@@ -71,7 +71,7 @@ namespace Valentin_Core
         {
             if (received.Length != 0)
             {
-                String[] separator = {" ", ",", ", ", "."};
+                String[] separator = {" "};
                 StringBuilder sb = new StringBuilder();
                 var tempString = received.Split(separator, 4096,
                     StringSplitOptions
@@ -98,15 +98,7 @@ namespace Valentin_Core
 
                 }
 
-                string formatMessage = "";
-                if (HasMessage)
-                {
-                    formatMessage = StringHelpers.ItalicMessage(sb.ToString());
-                }
-                else
-                {
-                    formatMessage = sb.ToString();
-                }
+                var formatMessage = HasMessage ? StringHelpers.ItalicMessage(sb.ToString()) : sb.ToString();
 
                 return formatMessage;
             }
@@ -114,9 +106,10 @@ namespace Valentin_Core
             throw new Exception();
         }
 
+       
         private List<string> MessageTextToList(string message)
         {
-            String[] separator = {" ", ",", ", "};
+            String[] separator = {" "};
             List<string> result = new List<string>();
             var tempString = message.Split(separator, 4096,
                 StringSplitOptions
